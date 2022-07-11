@@ -5,8 +5,8 @@ export const productConficuration = (): ProductConfiguration[] => [
     skus: ['atv'],
     strategy: 'quantity',
     config: {
-      quantityThreshold: '3',
-      discountedPrice: 21900,
+      quantityThreshold: 3,
+      discountedPrice: 10950,
     },
   },
   {
