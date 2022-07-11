@@ -4,12 +4,12 @@
 
 Samy Co is starting a computer store. You have been engaged to build the checkout system. We will start with the following products in our catalogue
 
-| SKU     | Name        | Price    |
-| --------|:-----------:| --------:|
-| ipd     | Super iPad  | $549.99  |
-| mbp     | MacBook Pro | $1399.99 |
-| atv     | Apple TV    | $109.50  |
-| vga     | VGA adapter | $30.00   |
+| SKU |    Name     |    Price |
+| --- | :---------: | -------: |
+| ipd | Super iPad  |  $549.99 |
+| mbp | MacBook Pro | $1399.99 |
+| atv |  Apple TV   |  $109.50 |
+| vga | VGA adapter |   $30.00 |
 
 As we're launching our new computer store, we would like to have a few opening day specials.
 
@@ -23,16 +23,15 @@ Our checkout system can scan items in any order.
 The interface to our checkout looks like this (shown in typescript):
 
 ```typescript
-  const co = new Checkout(pricingRules);
-  co.scan(item1);
-  co.scan(item2);
-  co.total();
+const co = new Checkout(pricingRules);
+co.scan(item1);
+co.scan(item2);
+co.total();
 ```
 
 Your task is to implement a checkout system that fulfils the requirements described above.
 
-Example scenarios
------------------
+## Example scenarios
 
 SKUs Scanned: atv, atv, atv, vga
 Total expected: $249.00
@@ -40,12 +39,42 @@ Total expected: $249.00
 SKUs Scanned: atv, ipd, ipd, atv, ipd, ipd, ipd
 Total expected: $2718.95
 
-Notes on implementation:
+## Prerequisite
 
-- use **Typescript**
-- try not to spend more than 2 hours maximum. (We don't want you to lose a weekend over this!)
-- don't build guis etc, we're more interested in your approach to solving the given task, not how shiny it looks
-- don't worry about making a command line interface to the application
-- don't use any frameworks
+- Nodejs version 14.16.0 as a minimum
+- Optional docker desktop to run the app using docker
 
-When you've finished, send through the link to your github-repo.
+## Running the program
+
+### Using npm
+
+```
+# if you have nvm on your system
+nvm use
+
+# install dependencies
+npm i
+
+# testing the app
+npm test
+
+# lint
+npm run lint
+
+```
+
+### Using docker
+
+Note, the entry point to docker is npm. So you can run any command using the container that you would normally using npm. Just the commands don't need to start with npm. See examples below.
+
+```
+# Build the docker image
+docker build -t samyco-store .
+
+# run tests
+docker run -it samyco-store test
+
+# run lint
+docker run -it samyco-store run lint
+
+```
