@@ -12,6 +12,7 @@
   "plugins": ["@typescript-eslint"],
   "rules": {
     "@typescript-eslint/no-type-alias": "off",
-    "@typescript-eslint/no-magic-numbers": "off"
+    "@typescript-eslint/no-magic-numbers": "off",
+    "@typescript-eslint/prefer-reduce-type-parameter": "off"
   }
 }

@@ -1,0 +1,20 @@
+import type { ProductConfiguration } from '../models/ProductConfiguration';
+
+export const productConficuration = (): ProductConfiguration[] => [
+  {
+    skus: ['atv'],
+    strategy: 'quantity',
+    config: {
+      quantityThreshold: '3',
+      discountedPrice: 21900,
+    },
+  },
+  {
+    skus: ['ipd'],
+    strategy: 'bulk',
+    config: {
+      quantityThreshold: '4',
+      price: 49999,
+    },
+  },
+];
