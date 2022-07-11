@@ -187,4 +187,52 @@ describe('Checkout Service', () => {
       });
     });
   });
+
+  describe('with bulk discount', () => {
+    it('should apply bulk discount', () => {
+      const checkoutService = setup();
+      const item1 = {
+        sku: 'ipd',
+        name: 'Super iPad',
+        price: 54999,
+      };
+      when(mockedProductRepository.findProductBySku(item1.sku)).thenReturn(item1);
+      when(mockedProductConfigurationRepository.findBySku(item1.sku)).thenReturn({
+        skus: [item1.sku],
+        strategy: 'bulk',
+        config: {
+          quantityThreshold: 4,
+          discountedPrice: 5000,
+        },
+      });
+      checkoutService.scan(item1.sku); // 49999
+      checkoutService.scan(item1.sku); // 49999
+      checkoutService.scan(item1.sku); // 49999
+      checkoutService.scan(item1.sku); // 49999
+      checkoutService.scan(item1.sku); // 49999
+      expect(checkoutService.total()).toEqual(49999 * 5);
+    });
+
+    it('should apply no discount', () => {
+      const checkoutService = setup();
+      const item1 = {
+        sku: 'ipd',
+        name: 'Super iPad',
+        price: 54999,
+      };
+      when(mockedProductRepository.findProductBySku(item1.sku)).thenReturn(item1);
+      when(mockedProductConfigurationRepository.findBySku(item1.sku)).thenReturn({
+        skus: [item1.sku],
+        strategy: 'bulk',
+        config: {
+          quantityThreshold: 4,
+          discountedPrice: 5000,
+        },
+      });
+      checkoutService.scan(item1.sku); // 54999
+      checkoutService.scan(item1.sku); // 54999
+      checkoutService.scan(item1.sku); // 54999
+      expect(checkoutService.total()).toEqual(54999 * 3);
+    });
+  });
 });

@@ -35,11 +35,23 @@ export class CheckoutService implements ICheckoutService {
         if (pricingConfig.strategy === 'quantity') {
           discountAmount += this.calculateQuantityDiscount(items, pricingConfig);
         }
+        if (pricingConfig.strategy === 'bulk') {
+          discountAmount += this.calculateBulkDiscount(items, pricingConfig);
+        }
       }
     });
 
     return discountAmount;
   }
+
+  private calculateBulkDiscount(items: Product[], pricingConfig: ProductConfiguration): number {
+    if (items.length >= pricingConfig.config.quantityThreshold) {
+      return items.length * Number(pricingConfig.config.discountedPrice);
+    }
+
+    return 0;
+  }
+
   private calculateQuantityDiscount(items: Product[], pricingConfig: ProductConfiguration): number {
     const quantity = items.length;
     const discount = Math.floor(quantity / Number(pricingConfig.config.quantityThreshold));

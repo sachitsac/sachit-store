@@ -14,7 +14,7 @@ export const productConficuration = (): ProductConfiguration[] => [
     strategy: 'bulk',
     config: {
       quantityThreshold: '4',
-      price: 49999,
+      discountedPrice: 5000,
     },
   },
 ];
