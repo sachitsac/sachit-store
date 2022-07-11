@@ -1,9 +1,10 @@
+import { BulkPricingStrategy } from './BulkPricingStrategy';
 import { QuantityPricingStrategy } from './QuantityPricingStrategy';
 import { PricingService } from './PricingService';
 
 let pricingServiceInstance: PricingService | undefined;
 
-const strategies = [new QuantityPricingStrategy()];
+const strategies = [new QuantityPricingStrategy(), new BulkPricingStrategy()];
 
 /**
  * Here we define the strategy factory.
