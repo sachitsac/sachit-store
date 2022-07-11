@@ -1,8 +1,10 @@
+import { PricingStrategyFactory } from './productPricing/PricingStrategyFactory';
 import type { ICheckoutService } from './ICheckoutService';
 import type { IProductConfigurationRepository } from '../repositories/IProductConfigurationRepository';
 import type { IProductRepository } from '../repositories/IProductRepository';
 import type { Product } from './../models/Product';
 import type { ProductConfiguration } from '../models/ProductConfiguration';
+import { groupBy } from '../utils/groupBy';
 
 export class CheckoutService implements ICheckoutService {
   public items: Product[] = [];
@@ -26,14 +28,14 @@ export class CheckoutService implements ICheckoutService {
   }
 
   private calculateDiscounts(): number {
-    const itemsBySku = this.groupBy(this.items, (item) => item.sku);
+    const itemsBySku = groupBy(this.items, (item) => item.sku);
 
     let discountAmount = 0;
     itemsBySku.forEach((items) => {
       const pricingConfig = this.productConficurationRepository.findBySku(items[0].sku);
       if (pricingConfig != null) {
         if (pricingConfig.strategy === 'quantity') {
-          discountAmount += this.calculateQuantityDiscount(items, pricingConfig);
+          discountAmount += PricingStrategyFactory().getTotalDiscount(items, pricingConfig);
         }
         if (pricingConfig.strategy === 'bulk') {
           discountAmount += this.calculateBulkDiscount(items, pricingConfig);
@@ -50,23 +52,5 @@ export class CheckoutService implements ICheckoutService {
     }
 
     return 0;
-  }
-
-  private calculateQuantityDiscount(items: Product[], pricingConfig: ProductConfiguration): number {
-    const quantity = items.length;
-    const discount = Math.floor(quantity / Number(pricingConfig.config.quantityThreshold));
-    return discount > 0 ? discount * Number(pricingConfig.config.discountedPrice) : 0;
-  }
-
-  private groupBy<K, V>(array: V[], keyFn: (item: V) => K): Map<K, V[]> {
-    return array.reduce((store, item) => {
-      const key = keyFn(item);
-      if (!store.has(key)) {
-        store.set(key, [item]);
-      } else {
-        store.get(key)?.push(item);
-      }
-      return store;
-    }, new Map<K, V[]>());
   }
 }
